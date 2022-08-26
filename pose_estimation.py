@@ -6,14 +6,12 @@ import math
 import datetime
 import imutils
 from models.centroidtracker import CentroidTracker
-# from object_detection import ObjectDetection
 import cv2
 import numpy as np
 from IPython import display
 from numpy.lib.stride_tricks import as_strided
 from openvino.runtime import Core
 from models.decoder import OpenPoseDecoder
-# sys.path.append("../utils")
 import models.notebook_utils as utils
 
 
@@ -76,8 +74,7 @@ def heatmap_nms(heatmaps, pooled_heatmaps):
 
 # Get poses from results.
 def process_results(img, pafs, heatmaps):
-    # This processing comes from
-    # https://github.com/openvinotoolkit/open_model_zoo/blob/master/demos/common/python/models/open_pose.py
+    
     pooled_heatmaps = np.array(
         [[pool2d(h, kernel_size=3, stride=1, padding=1, pool_mode="max") for h in heatmaps[0]]]
     )
@@ -127,8 +124,7 @@ def draw_poses(img, poses, point_score_threshold, skeleton=default_skeleton):
 protopath = "MobileNetSSD_deploy.prototxt"
 modelpath = "MobileNetSSD_deploy.caffemodel"
 detector = cv2.dnn.readNetFromCaffe(prototxt=protopath, caffeModel=modelpath)
-# detector.setPreferableBackend(cv2.dnn.DNN_BACKEND_INFERENCE_ENGINE)
-# detector.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
+
 
 
 CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
@@ -194,9 +190,6 @@ fps_start_time = datetime.datetime.now()
 fps = 0
 total_frames = 0
 
-# player = utils.VideoPlayer(source=0, flip=False, fps=30, skip_first_frames=0)        # Start capturing.
-# player.start()
-
 processing_times = collections.deque()
 
 
@@ -228,9 +221,6 @@ while True:
     # Use processing times from last 200 frames.
     if len(processing_times) > 200:
         processing_times.popleft()
-           
-    
-    
     
     
     total_frames = total_frames + 1
@@ -280,26 +270,17 @@ while True:
     fps_text = "FPS: {:.2f}".format(fps)
 
     cv2.putText(frame, fps_text, (5, 30), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 255), 1)
-    
-    
-    
-    
       
     # output the frame
-    # out.write(frame) 
+    out.write(frame) 
       
     # The original input frame is shown in the window 
     cv2.imshow('Original', frame)
   
-    # The window showing the operated video stream 
-    # cv2.imshow('frame', hsv)
-        
-  
-    
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
         
 cap.release()
-# out.release()
+out.release()
 cv2.destroyAllWindows()    
