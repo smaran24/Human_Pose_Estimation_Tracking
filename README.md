@@ -11,3 +11,6 @@ The model is downloaded from OpenVINO Open Model Zoo. In the models.lst is the l
 - OpenVINO
 - OpenCV
 - Microsoft Visual Studio 2019
+
+
+The Program videos in the Test_Videos has been considered to test the model. Output is saved in the Output_Videos.
